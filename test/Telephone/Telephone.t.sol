@@ -1,4 +1,3 @@
-
 pragma solidity >=0.8.19;
 
 import { Test } from "forge-std/Test.sol";
@@ -9,7 +8,7 @@ import { Ethernaut } from "src/Ethernaut.sol";
 contract ExploitTelephone {
     address victimSC;
     address public owner;
-    
+
     constructor(address _victimSC) {
         victimSC = _victimSC;
         owner = msg.sender;
@@ -25,7 +24,7 @@ contract ExploitTelephone {
 contract TelephoneTest is Test {
     Ethernaut ethernaut;
     address me = makeAddr("me");
-    
+
     function setUp() external {
         ethernaut = new Ethernaut();
     }
@@ -45,7 +44,7 @@ contract TelephoneTest is Test {
 
         // assume exploit owner is "me"
         ExploitTelephone exploit = new ExploitTelephone(address(telephone));
-        
+
         // attack
         address telephoneOwner = telephone.owner();
         changePrank(telephoneVictim);

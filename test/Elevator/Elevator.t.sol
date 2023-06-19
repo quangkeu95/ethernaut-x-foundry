@@ -30,7 +30,7 @@ contract ElevatorExploit {
 contract ElevatorTest is Test {
     Ethernaut ethernaut;
     address me = makeAddr("me");
-    
+
     function setUp() external {
         ethernaut = new Ethernaut();
     }
@@ -47,11 +47,10 @@ contract ElevatorTest is Test {
         // attack
         ElevatorExploit exploit = new ElevatorExploit(address(elevator));
         exploit.attack();
-        
+
         // submission
         bool levelPassed = ethernaut.submitLevelInstance(payable(levelAddress));
         vm.stopPrank();
         assert(levelPassed);
     }
 }
-

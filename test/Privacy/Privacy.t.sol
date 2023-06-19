@@ -5,11 +5,10 @@ import { Privacy } from "src/Privacy/Privacy.sol";
 import { PrivacyFactory } from "src/Privacy/PrivacyFactory.sol";
 import { Ethernaut } from "src/Ethernaut.sol";
 
-
 contract PrivacyTest is Test {
     Ethernaut ethernaut;
     address me = makeAddr("me");
-    
+
     function setUp() external {
         ethernaut = new Ethernaut();
     }
@@ -26,11 +25,10 @@ contract PrivacyTest is Test {
         // attack
         bytes32 password = vm.load(address(privacy), bytes32(uint256(5)));
         privacy.unlock(bytes16(password));
-        
+
         // submission
         bool levelPassed = ethernaut.submitLevelInstance(payable(levelAddress));
         vm.stopPrank();
         assert(levelPassed);
     }
 }
-

@@ -8,7 +8,7 @@ import { Ethernaut } from "src/Ethernaut.sol";
 contract ExploitToken {
     address victimSC;
     address public owner;
-    
+
     constructor(address _victimSC) {
         victimSC = _victimSC;
         owner = msg.sender;
@@ -24,7 +24,7 @@ contract ExploitToken {
 contract TokenTest is Test {
     Ethernaut ethernaut;
     address me = makeAddr("me");
-    
+
     function setUp() external {
         ethernaut = new Ethernaut();
     }
@@ -42,15 +42,15 @@ contract TokenTest is Test {
 
         address sidekick = makeAddr("sidekick");
         vm.startPrank(sidekick);
-        // uncheckd ignore revert on overflow/underflow, so we can proceed to increase balance of recipient to an arbitrary amount 
-        token.transfer(me, token.totalSupply());        
+        // uncheckd ignore revert on overflow/underflow, so we can proceed to increase balance of recipient to an
+        // arbitrary amount
+        token.transfer(me, token.totalSupply());
 
         changePrank(me);
-        
+
         // submission
         bool levelPassed = ethernaut.submitLevelInstance(payable(levelAddress));
         vm.stopPrank();
         assert(levelPassed);
     }
 }
-

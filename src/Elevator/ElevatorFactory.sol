@@ -2,20 +2,18 @@
 
 pragma solidity ^0.8.10;
 
-import '../BaseLevel.sol';
-import './Elevator.sol';
+import "../BaseLevel.sol";
+import "./Elevator.sol";
 
 contract ElevatorFactory is Level {
+    function createInstance(address _player) public payable override returns (address) {
+        _player;
+        Elevator instance = new Elevator();
+        return address(instance);
+    }
 
-  function createInstance(address _player) override public payable returns (address) {
-    _player;
-    Elevator instance = new Elevator();
-    return address(instance);
-  }
-
-  function validateInstance(address payable _instance, address) override public returns (bool) {
-    Elevator elevator = Elevator(_instance);
-    return elevator.top();
-  }
-
+    function validateInstance(address payable _instance, address) public override returns (bool) {
+        Elevator elevator = Elevator(_instance);
+        return elevator.top();
+    }
 }

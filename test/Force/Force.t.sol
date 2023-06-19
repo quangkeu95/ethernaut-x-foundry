@@ -7,7 +7,7 @@ import { Ethernaut } from "src/Ethernaut.sol";
 
 contract Attack {
     address victim;
-    
+
     constructor(address _victim) {
         victim = _victim;
     }
@@ -20,7 +20,7 @@ contract Attack {
 contract ForceTest is Test {
     Ethernaut ethernaut;
     address me = makeAddr("me");
-    
+
     function setUp() external {
         ethernaut = new Ethernaut();
     }
@@ -36,12 +36,11 @@ contract ForceTest is Test {
         // attack
         vm.deal(me, 1 ether);
         Attack attack = new Attack(address(force));
-        address(attack).call{value: 10 wei}(new bytes(0));
-        
+        address(attack).call{ value: 10 wei }(new bytes(0));
+
         // submission
         bool levelPassed = ethernaut.submitLevelInstance(payable(levelAddress));
         vm.stopPrank();
         assert(levelPassed);
     }
 }
-

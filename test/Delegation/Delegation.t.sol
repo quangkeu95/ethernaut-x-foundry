@@ -8,7 +8,7 @@ import { Ethernaut } from "src/Ethernaut.sol";
 contract DelegationTest is Test {
     Ethernaut ethernaut;
     address me = makeAddr("me");
-    
+
     function setUp() external {
         ethernaut = new Ethernaut();
     }
@@ -23,11 +23,10 @@ contract DelegationTest is Test {
 
         // attack
         address(delegation).call(abi.encodeWithSignature("pwn()"));
-        
+
         // submission
         bool levelPassed = ethernaut.submitLevelInstance(payable(levelAddress));
         vm.stopPrank();
         assert(levelPassed);
     }
 }
-

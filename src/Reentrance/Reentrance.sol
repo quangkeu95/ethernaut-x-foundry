@@ -2,32 +2,32 @@
 
 pragma solidity ^0.8.10;
 
-import 'openzeppelin-contracts/contracts/utils/math/SafeMath.sol'; // Path change of openzeppelin contract
+import "openzeppelin-contracts/contracts/utils/math/SafeMath.sol"; // Path change of openzeppelin contract
 
 contract Reentrance {
-  
-  using SafeMath for uint256;
-  mapping(address => uint) public balances;
+    using SafeMath for uint256;
 
-  function donate(address _to) public payable {
-    balances[_to] = balances[_to].add(msg.value);
-  }
+    mapping(address => uint256) public balances;
 
-  function balanceOf(address _who) public view returns (uint balance) {
-    return balances[_who];
-  }
-
-  function withdraw(uint _amount) public {
-    if(balances[msg.sender] >= _amount) {
-      (bool result,) = msg.sender.call{value:_amount}("");
-      if(result) {
-        _amount;
-      }
-      unchecked {
-        balances[msg.sender] -= _amount; // unchecked to prevent underflow errors
-      }
+    function donate(address _to) public payable {
+        balances[_to] = balances[_to].add(msg.value);
     }
-  }
 
-  receive() external payable {}
+    function balanceOf(address _who) public view returns (uint256 balance) {
+        return balances[_who];
+    }
+
+    function withdraw(uint256 _amount) public {
+        if (balances[msg.sender] >= _amount) {
+            (bool result,) = msg.sender.call{ value: _amount }("");
+            if (result) {
+                _amount;
+            }
+            unchecked {
+                balances[msg.sender] -= _amount; // unchecked to prevent underflow errors
+            }
+        }
+    }
+
+    receive() external payable { }
 }

@@ -3,27 +3,25 @@
 pragma solidity ^0.8.10;
 
 contract Token {
+    mapping(address => uint256) balances;
+    uint256 public totalSupply;
 
-  mapping(address => uint) balances;
-  uint public totalSupply;
-
-  constructor(uint _initialSupply) public {
-    balances[msg.sender] = totalSupply = _initialSupply;
-  }
-
-  function transfer(address _to, uint _value) public returns (bool) {
-
-    // Solidity ^0.8.0 prevents overflows/underflows so need to have it unchecked 
-    unchecked {
-        require(balances[msg.sender] - _value >= 0);
-        balances[msg.sender] -= _value;
-        balances[_to] += _value;
+    constructor(uint256 _initialSupply) public {
+        balances[msg.sender] = totalSupply = _initialSupply;
     }
 
-    return true;
-  }
+    function transfer(address _to, uint256 _value) public returns (bool) {
+        // Solidity ^0.8.0 prevents overflows/underflows so need to have it unchecked
+        unchecked {
+            require(balances[msg.sender] - _value >= 0);
+            balances[msg.sender] -= _value;
+            balances[_to] += _value;
+        }
 
-  function balanceOf(address _owner) public view returns (uint balance) {
-    return balances[_owner];
-  }
+        return true;
+    }
+
+    function balanceOf(address _owner) public view returns (uint256 balance) {
+        return balances[_owner];
+    }
 }

