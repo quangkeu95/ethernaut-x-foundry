@@ -44,7 +44,7 @@ contract MagicNumTest is Test {
         // RETURN - f3
         // so the init bytecode is 600a600c600039600a6000f3602a60805260206080f3
 
-        bytes memory code = "\x60\x0a\x60\x0c\x60\x00\x39\x60\x0a\x60\x00\xf3\x60\x2a\x60\x80\x52\x60\x20\x60\x80\xf3";
+        bytes memory code = hex"600a600c600039600a6000f3602a60805260206080f3";
         address solver;
         assembly {
             solver := create(0, add(code, 0x20), mload(code))

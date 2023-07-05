@@ -4,6 +4,7 @@
   libs = ['lib']
   test = 'test'
 
+  fs_permissions = [{ access = "read", path = "./src"}]
 [fmt]
   bracket_spacing = true
   int_types = "long"
