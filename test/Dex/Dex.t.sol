@@ -49,29 +49,22 @@ contract DexTest is Test {
         address[2] memory tokens = [address(token1), address(token2)];
         uint256[2] memory myBalances;
         uint256[2] memory dexBalances;
-        
 
         uint256 fromIndex = 0;
         uint256 toIndex = 1;
-        
+
         while (true) {
-            myBalances = [
-                IERC20(tokens[fromIndex]).balanceOf(me),
-                IERC20(tokens[toIndex]).balanceOf(me)
-            ];
-            dexBalances = [
-                IERC20(tokens[fromIndex]).balanceOf(address(dex)),
-                IERC20(tokens[toIndex]).balanceOf(address(dex))
-            ];
-            
+            myBalances = [IERC20(tokens[fromIndex]).balanceOf(me), IERC20(tokens[toIndex]).balanceOf(me)];
+            dexBalances =
+                [IERC20(tokens[fromIndex]).balanceOf(address(dex)), IERC20(tokens[toIndex]).balanceOf(address(dex))];
+
             uint256 amountOut = dex.get_swap_price(tokens[fromIndex], tokens[toIndex], myBalances[0]);
             if (amountOut > dexBalances[1]) {
                 uint256 amountIn = dex.get_swap_price(tokens[toIndex], tokens[fromIndex], dexBalances[1]);
-                dex.swap(tokens[fromIndex], tokens[toIndex], amountIn);    
+                dex.swap(tokens[fromIndex], tokens[toIndex], amountIn);
                 break;
             } else {
-
-                dex.swap(tokens[fromIndex], tokens[toIndex], myBalances[0]);    
+                dex.swap(tokens[fromIndex], tokens[toIndex], myBalances[0]);
             }
             fromIndex = 1 - fromIndex;
             toIndex = 1 - toIndex;

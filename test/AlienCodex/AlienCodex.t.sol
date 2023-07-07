@@ -43,7 +43,7 @@ contract AlienCodexTest is Test {
         alienInterface.retract();
 
         // codex array new length = 2*256 - 1
-        // storage slot at index i in codex array = keccak256(1) + i 
+        // storage slot at index i in codex array = keccak256(1) + i
         // so we need to find i so uint(keccak256(1)) + i = 0
         uint256 slot0Index;
         unchecked {
@@ -53,6 +53,5 @@ contract AlienCodexTest is Test {
         alienInterface.revise(slot0Index, bytes32(abi.encode(tx.origin)));
 
         assertEq(alienInterface.owner(), tx.origin);
-       
     }
 }

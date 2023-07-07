@@ -1,4 +1,3 @@
-
 pragma solidity >=0.8.19;
 
 import { Test } from "forge-std/Test.sol";
@@ -43,7 +42,8 @@ contract DexTwoTest is Test {
         // so we can mint new token, send them to the dex and drain contract's tokens
         SwappableTokenTwo fakeToken = new SwappableTokenTwo("FakeToken", "FAKE", 10_000_000 ether);
         vm.label(address(fakeToken), "FakeToken");
-        // for each token, we send 10_000 tokens to the dex contract, make the rate for FAKE/TargetToken = 10_000 / 100 = 100  
+        // for each token, we send 10_000 tokens to the dex contract, make the rate for FAKE/TargetToken = 10_000 / 100
+        // = 100
         fakeToken.approve(address(dex), type(uint256).max);
 
         fakeToken.transfer(address(dex), 1 ether);

